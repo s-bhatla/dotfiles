@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# install.sh — bootstrap terminal setup on a fresh macOS or Linux machine
-# Tools: oh-my-zsh, zoxide, eza, bat, fzf, fzf-tab, fd, nvm
+# install.sh — bootstrap a developer machine on macOS or Linux
+# Tools: zsh, oh-my-zsh, eza, bat, fzf, fzf-tab, fd, zoxide, ripgrep,
+#        tmux, jq, direnv, gh, git-delta, go, python3, rust, uv, nvm,
+#        docker (orbstack on mac / docker-ce on linux), vscode, nerd font
 set -euo pipefail
 
 GREEN='\033[0;32m'
@@ -31,7 +33,12 @@ install_mac() {
   fi
 
   log "Installing packages via Homebrew..."
-  brew install git zsh zoxide eza bat fzf fd
+  brew install git zsh zoxide eza bat fzf fd ripgrep tmux jq direnv gh git-delta go python3
+
+  log "Installing apps..."
+  brew install --cask visual-studio-code orbstack font-jetbrains-mono-nerd-font
+
+  warn "Ghostty: not scripted — install manually from https://ghostty.org/download"
 }
 
 # ── Linux (Debian/Ubuntu) ──────────────────────────────────────────────────────
@@ -39,7 +46,8 @@ install_mac() {
 install_linux() {
   log "Updating apt and installing base packages..."
   sudo apt-get update -y
-  sudo apt-get install -y git zsh curl wget build-essential unzip
+  sudo apt-get install -y git zsh curl wget build-essential unzip ripgrep \
+    tmux jq direnv python3 python3-pip python3-venv python3-dev
 
   # bat (binary is called batcat on Ubuntu/Debian)
   if ! command -v bat &>/dev/null && ! command -v batcat &>/dev/null; then
@@ -58,6 +66,7 @@ install_linux() {
     log "Installing eza..."
     EZA_TAG=$(curl -fsSL "https://api.github.com/repos/eza-community/eza/releases/latest" \
       | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')
+    [ -z "$EZA_TAG" ] && err "Failed to fetch eza release tag — check your internet connection."
     ARCH=$(uname -m)
     case "$ARCH" in
       x86_64)  EZA_ARCH="x86_64-unknown-linux-gnu" ;;
@@ -84,6 +93,81 @@ install_linux() {
     git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
     "$HOME/.fzf/install" --all --no-bash --no-fish
   fi
+
+  # Docker CE — official convenience script
+  if ! command -v docker &>/dev/null; then
+    log "Installing Docker..."
+    curl -fsSL https://get.docker.com | sh
+    sudo usermod -aG docker "$USER"
+    warn "Docker: log out and back in for group membership to take effect."
+  fi
+
+  # VS Code — Microsoft apt repo
+  if ! command -v code &>/dev/null; then
+    log "Installing VS Code..."
+    curl -fsSL "https://packages.microsoft.com/keys/microsoft.asc" \
+      | gpg --dearmor > /tmp/microsoft.gpg
+    sudo install -o root -g root -m 644 /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+    rm /tmp/microsoft.gpg
+    echo "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main" \
+      | sudo tee /etc/apt/sources.list.d/vscode.list
+    sudo apt-get update
+    sudo apt-get install -y code
+  fi
+
+  # GitHub CLI — official apt repo
+  if ! command -v gh &>/dev/null; then
+    log "Installing GitHub CLI..."
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+      | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      | sudo tee /etc/apt/sources.list.d/github-cli.list
+    sudo apt-get update
+    sudo apt-get install -y gh
+  fi
+
+  # git-delta
+  if ! command -v delta &>/dev/null; then
+    log "Installing git-delta..."
+    sudo apt-get install -y git-delta 2>/dev/null \
+      || warn "git-delta not in apt — install manually from https://github.com/dandavison/delta/releases"
+  fi
+
+  # Go — official tarball from golang.org
+  if ! command -v go &>/dev/null; then
+    log "Installing Go..."
+    GO_VERSION=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -1)
+    [ -z "$GO_VERSION" ] && err "Failed to fetch Go version — check your internet connection."
+    ARCH=$(uname -m)
+    case "$ARCH" in
+      x86_64)  GO_ARCH="amd64" ;;
+      aarch64) GO_ARCH="arm64" ;;
+      *)        err "Unsupported architecture for Go: $ARCH" ;;
+    esac
+    curl -fsSLo /tmp/go.tar.gz "https://go.dev/dl/${GO_VERSION}.linux-${GO_ARCH}.tar.gz"
+    sudo rm -rf /usr/local/go
+    sudo tar -C /usr/local -xzf /tmp/go.tar.gz
+    rm /tmp/go.tar.gz
+  fi
+
+  # JetBrainsMono Nerd Font
+  if ! fc-list 2>/dev/null | grep -qi "JetBrainsMono"; then
+    log "Installing JetBrainsMono Nerd Font..."
+    FONT_VERSION=$(curl -fsSL "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" \
+      | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')
+    if [ -z "$FONT_VERSION" ]; then
+      warn "Failed to fetch Nerd Font version — skipping font install."
+    else
+      mkdir -p "$HOME/.local/share/fonts"
+      curl -fsSLo /tmp/JetBrainsMono.tar.xz \
+        "https://github.com/ryanoasis/nerd-fonts/releases/download/${FONT_VERSION}/JetBrainsMono.tar.xz"
+      tar -xf /tmp/JetBrainsMono.tar.xz -C "$HOME/.local/share/fonts"
+      fc-cache -f
+      rm /tmp/JetBrainsMono.tar.xz
+    fi
+  fi
+
+  warn "Ghostty: not available as a stable Linux package — install manually from https://ghostty.org/download"
 }
 
 # ── Dispatch ───────────────────────────────────────────────────────────────────
@@ -116,11 +200,37 @@ if [ ! -d "$HOME/.fzf-tab" ]; then
   git clone --depth 1 https://github.com/Aloxaf/fzf-tab "$HOME/.fzf-tab"
 fi
 
+# ── Rust ───────────────────────────────────────────────────────────────────────
+
+if [ ! -f "$HOME/.cargo/bin/rustc" ]; then
+  log "Installing Rust..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+fi
+
+# ── uv (Python package / project manager) ─────────────────────────────────────
+
+if ! command -v uv &>/dev/null && [ ! -f "$HOME/.local/bin/uv" ]; then
+  log "Installing uv..."
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+# ── git: configure delta as diff pager ────────────────────────────────────────
+
+if command -v delta &>/dev/null; then
+  git config --global core.pager delta
+  git config --global interactive.diffFilter "delta --color-only"
+  git config --global delta.navigate true
+  git config --global delta.dark true
+fi
+
 # ── nvm ────────────────────────────────────────────────────────────────────────
 
 if [ ! -d "$HOME/.nvm" ]; then
   log "Installing nvm..."
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  NVM_VERSION=$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" \
+    | grep '"tag_name"' | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')
+  [ -z "$NVM_VERSION" ] && err "Failed to fetch nvm release tag — check your internet connection."
+  curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
 fi
 
 # ── .zshrc ─────────────────────────────────────────────────────────────────────
