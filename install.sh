@@ -243,6 +243,57 @@ fi
 log "Installing .zshrc..."
 cp "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
 
+# ── LLM agents: CLAUDE.md + skills ────────────────────────────────────────────
+# Everything lands in ~/.agents. Each agent found gets symlinks into it.
+
+# Symlink $2 -> $1. A real file or dir at $2 moves to ~/.agents/backup first.
+link() {
+  if [ -e "$2" ] && [ ! -L "$2" ]; then
+    mkdir -p "$HOME/.agents/backup"
+    warn "Moving existing $2 to ~/.agents/backup"
+    mv "$2" "$HOME/.agents/backup/$(basename "$2").$(date +%s)"
+  fi
+  mkdir -p "$(dirname "$2")"
+  ln -sfn "$1" "$2"
+}
+
+# ponytail: codex is a "universal" agent, so the skills CLI writes only to
+# ~/.agents/skills for it. Cursor and Gemini CLI read that dir too.
+SKILL_AGENTS="codex"
+HAS_CLAUDE=0
+if [ -d "$HOME/.claude" ] || command -v claude &>/dev/null; then
+  HAS_CLAUDE=1
+  SKILL_AGENTS="$SKILL_AGENTS claude-code"
+fi
+
+# CLAUDE.md: not hosted anywhere, so ~/.agents/CLAUDE.md holds the copy
+mkdir -p "$HOME/.agents/skills"
+AGENT_MD="$HOME/.agents/CLAUDE.md"
+if [ -f "$AGENT_MD" ] && ! cmp -s "$SCRIPT_DIR/llm/CLAUDE.md" "$AGENT_MD"; then
+  warn "Backing up existing $AGENT_MD to $AGENT_MD.bak"
+  cp "$AGENT_MD" "$AGENT_MD.bak"
+fi
+cp "$SCRIPT_DIR/llm/CLAUDE.md" "$AGENT_MD"
+[ "$HAS_CLAUDE" = 1 ] && link "$AGENT_MD" "$HOME/.claude/CLAUDE.md"
+{ [ -d "$HOME/.codex" ] || command -v codex &>/dev/null; } && link "$AGENT_MD" "$HOME/.codex/AGENTS.md"
+{ [ -d "$HOME/.gemini" ] || command -v gemini &>/dev/null; } && link "$AGENT_MD" "$HOME/.gemini/GEMINI.md"
+
+# Public skills: install from source with the skills CLI (needs node via nvm)
+log "Installing LLM skills..."
+grep -v '^#' "$SCRIPT_DIR/llm/skills.txt" | while read -r src names; do
+  # shellcheck disable=SC2086  # word-split agent and skill lists on purpose
+  bash -c '. "$HOME/.nvm/nvm.sh"; command -v node >/dev/null || nvm install --lts >/dev/null
+    npx -y skills@1.7.2 add "$@"' _ "$src" -g -y -a $SKILL_AGENTS -s $names </dev/null >/dev/null \
+    || warn "Failed to install skills from $src"
+done
+
+# Local skills (no public source): link from the repo
+for dir in "$SCRIPT_DIR"/llm/skills/*/; do
+  name="$(basename "$dir")"
+  link "${dir%/}" "$HOME/.agents/skills/$name"
+  [ "$HAS_CLAUDE" = 1 ] && link "$HOME/.agents/skills/$name" "$HOME/.claude/skills/$name"
+done
+
 # ── Set zsh as default shell ───────────────────────────────────────────────────
 
 ZSH_PATH="$(command -v zsh)"

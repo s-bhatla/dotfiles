@@ -82,10 +82,32 @@ Then open a new terminal.
 | `zoxide` | Homebrew | Official install script |
 | Nerd Font | Homebrew Cask | Downloaded from GitHub releases |
 
+## LLM agent setup
+
+`install.sh` puts all LLM files in `~/.agents`, then links each agent it finds to them.
+
+| File | Source | Installed to |
+|---|---|---|
+| `CLAUDE.md` | `llm/CLAUDE.md` (copy) | `~/.agents/CLAUDE.md` |
+| Public skills | `llm/skills.txt`, installed with `npx skills` | `~/.agents/skills/<name>` |
+| Local skills | `llm/skills/<name>` (symlink) | `~/.agents/skills/<name>` |
+
+| Agent found | Links |
+|---|---|
+| Claude Code | `~/.claude/CLAUDE.md` and `~/.claude/skills/<name>` |
+| Codex | `~/.codex/AGENTS.md` (reads `~/.agents/skills` directly) |
+| Gemini CLI | `~/.gemini/GEMINI.md` (reads `~/.agents/skills` directly) |
+| Cursor | none (reads `~/.agents/skills` directly) |
+
+The script moves a real file or folder that a link replaces to `~/.agents/backup`.
+To add a public skill, add its source and name to `llm/skills.txt`.
+To copy `CLAUDE.md` changes back into the repo, run `cp ~/.agents/CLAUDE.md llm/`.
+
 ## Repo structure
 
 ```
 dotfiles/
 ├── .zshrc       # zsh config — copied to ~/.zshrc
+├── llm/         # CLAUDE.md, skills.txt, local skills
 └── install.sh   # bootstrap script
 ```
