@@ -82,6 +82,15 @@ Then open a new terminal.
 | `zoxide` | Homebrew | Official install script |
 | Nerd Font | Homebrew Cask | Downloaded from GitHub releases |
 
+## VS Code setup
+
+| File | Installed to |
+|---|---|
+| `vscode/settings.json` | symlink at `~/Library/Application Support/Code/User/settings.json` (macOS) or `~/.config/Code/User/settings.json` (Linux) |
+| `vscode/extensions.txt` | installed with `code --install-extension` |
+
+Edits in VS Code change the repo file. To update the extension list, run `code --list-extensions > vscode/extensions.txt`.
+
 ## LLM agent setup
 
 `install.sh` puts all LLM files in `~/.agents`, then links each agent it finds to them.

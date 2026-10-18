@@ -294,6 +294,23 @@ for dir in "$SCRIPT_DIR"/llm/skills/*/; do
   [ "$HAS_CLAUDE" = 1 ] && link "$HOME/.agents/skills/$name" "$HOME/.claude/skills/$name"
 done
 
+# ── VS Code: settings + extensions ────────────────────────────────────────────
+# settings.json is a symlink, so edits made in VS Code land in the repo.
+
+if [ "$OS" = "Darwin" ]; then
+  VSCODE_USER="$HOME/Library/Application Support/Code/User"
+else
+  VSCODE_USER="$HOME/.config/Code/User"
+fi
+link "$SCRIPT_DIR/vscode/settings.json" "$VSCODE_USER/settings.json"
+
+if command -v code &>/dev/null; then
+  log "Installing VS Code extensions..."
+  while read -r ext; do
+    code --install-extension "$ext" </dev/null >/dev/null || warn "Failed to install $ext"
+  done < "$SCRIPT_DIR/vscode/extensions.txt"
+fi
+
 # ── Set zsh as default shell ───────────────────────────────────────────────────
 
 ZSH_PATH="$(command -v zsh)"
