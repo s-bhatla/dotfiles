@@ -311,6 +311,11 @@ if command -v code &>/dev/null; then
   done < "$SCRIPT_DIR/vscode/extensions.txt"
 fi
 
+# ── dotsync: push live config back to the repo ────────────────────────────────
+
+mkdir -p "$HOME/.local/bin"
+ln -sfn "$SCRIPT_DIR/sync.sh" "$HOME/.local/bin/dotsync"
+
 # ── Set zsh as default shell ───────────────────────────────────────────────────
 
 ZSH_PATH="$(command -v zsh)"
