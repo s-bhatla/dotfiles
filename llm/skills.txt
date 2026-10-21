@@ -1,4 +1,4 @@
 # Skills installed with the skills CLI (npx skills add). Format: <source> <skill>...
-vercel-labs/skills find-skills
 mattpocock/skills grill-me teach grill-with-docs codebase-design code-review
+vercel-labs/skills find-skills
 woosal1337/blog asd-ste100

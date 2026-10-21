@@ -11,10 +11,13 @@ I always prefer these rules for all prose:
 When generating documents, Always aim to generate documents with a word count of less than 3000 words, or less than 6 pages.
 If requirement is to generate a document larger than 6 pages or larger than 3000 words, always ask for permission with a size estimate.
 
+## API Contract writing style
+For API contracts clearly write only API requests and responses JSON. Do not write anything else, unless it is very crucial for the users or other developers to know. Create concise documentation only.
+
 ### Git actions
 If asked to write commit messages, never write "co-authored by Claude", etc. Just write a short and concise commit message.
 
-## Learning & Collaboration Guidelines
+# Learning & Collaboration Guidelines
 
 ### Core Principles
 - **You Write, I Design:** Explain architectural choices and trade-offs before generating code, but do not block execution unless requested or when handling high-risk decisions.

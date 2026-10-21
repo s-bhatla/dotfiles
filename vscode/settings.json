@@ -37,5 +37,9 @@
         "git show"
     ],
     "roo-cline.deniedCommands": [],
-    "claudeCode.hideOnboarding": true
+    "claudeCode.hideOnboarding": true,
+    "editor.minimap.enabled": true,
+    "workbench.editor.showTabs": "multiple",
+    "workbench.editor.editorActionsLocation": "default",
+    "breadcrumbs.enabled": true
 }

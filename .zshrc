@@ -16,6 +16,15 @@ source $ZSH/oh-my-zsh.sh
 
 ##### PATH / SDKs #####
 
+# Google Cloud SDK
+if [ -f "$HOME/Desktop/google-cloud-sdk/path.zsh.inc" ]; then
+  source "$HOME/Desktop/google-cloud-sdk/path.zsh.inc"
+fi
+
+if [ -f "$HOME/Desktop/google-cloud-sdk/completion.zsh.inc" ]; then
+  source "$HOME/Desktop/google-cloud-sdk/completion.zsh.inc"
+fi
+
 # pipx / uv / zoxide (installed to ~/.local/bin)
 export PATH="$PATH:$HOME/.local/bin"
 
