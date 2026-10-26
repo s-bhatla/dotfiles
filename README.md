@@ -54,11 +54,12 @@ Full developer machine bootstrap for macOS and Linux (Debian/Ubuntu). One script
 - `..` / `...` / `....` → go up 1 / 2 / 3 directories
 - `gpush "message"` → `git add . && git commit -m && git push`
 - `gbranch <name> "message"` → create branch, commit, push to origin
+- `dotsync ["message"]` → copy live config into this repo, commit, push
 
 ## Install on a fresh machine
 
 ```bash
-git clone https://github.com/sidharthbhatla/dotfiles.git ~/dotfiles
+git clone https://github.com/s-bhatla/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 bash install.sh
 ```
@@ -66,6 +67,21 @@ bash install.sh
 Then open a new terminal.
 
 > **Note:** If a `~/.zshrc` already exists it will be backed up to `~/.zshrc.bak` before being replaced.
+
+## Save changes back to the repo
+
+After you change a config file on a machine, run `dotsync`. It copies these files into the repo, then commits and pushes:
+
+| On the machine | In the repo |
+|---|---|
+| `~/.zshrc` | `.zshrc` |
+| `~/.claude/CLAUDE.md` | `llm/CLAUDE.md` |
+| VS Code `settings.json` | `vscode/settings.json` |
+| `code --list-extensions` | `vscode/extensions.txt` |
+| `~/.claude/skills/<name>` | `llm/skills/<name>` (local skills only) |
+| `~/.agents/.skill-lock.json` | `llm/skills.txt` |
+
+`install.sh` links `~/.local/bin/dotsync` to `sync.sh`. If you move the repo, run `install.sh` again. The push needs GitHub access, so run `gh auth login` first.
 
 ## Platform notes
 
@@ -89,7 +105,7 @@ Then open a new terminal.
 | `vscode/settings.json` | symlink at `~/Library/Application Support/Code/User/settings.json` (macOS) or `~/.config/Code/User/settings.json` (Linux) |
 | `vscode/extensions.txt` | installed with `code --install-extension` |
 
-Edits in VS Code change the repo file. To update the extension list, run `code --list-extensions > vscode/extensions.txt`.
+Edits in VS Code change the repo file. `dotsync` updates the extension list.
 
 ## LLM agent setup
 
@@ -110,7 +126,7 @@ Edits in VS Code change the repo file. To update the extension list, run `code -
 
 The script moves a real file or folder that a link replaces to `~/.agents/backup`.
 To add a public skill, add its source and name to `llm/skills.txt`.
-To copy `CLAUDE.md` changes back into the repo, run `cp ~/.agents/CLAUDE.md llm/`.
+`dotsync` copies `CLAUDE.md` changes and new `npx skills add` installs back into the repo.
 
 ## Repo structure
 
@@ -118,5 +134,7 @@ To copy `CLAUDE.md` changes back into the repo, run `cp ~/.agents/CLAUDE.md llm/
 dotfiles/
 ├── .zshrc       # zsh config — copied to ~/.zshrc
 ├── llm/         # CLAUDE.md, skills.txt, local skills
-└── install.sh   # bootstrap script
+├── vscode/      # settings.json, extensions.txt
+├── install.sh   # bootstrap script
+└── sync.sh      # dotsync: push live config back to the repo
 ```
