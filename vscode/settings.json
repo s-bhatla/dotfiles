@@ -41,5 +41,6 @@
     "editor.minimap.enabled": true,
     "workbench.editor.showTabs": "multiple",
     "workbench.editor.editorActionsLocation": "default",
-    "breadcrumbs.enabled": true
+    "breadcrumbs.enabled": true,
+    "zenMode.hideLineNumbers": false
 }
