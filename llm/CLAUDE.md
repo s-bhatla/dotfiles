@@ -15,7 +15,10 @@ If requirement is to generate a document larger than 6 pages or larger than 3000
 For API contracts clearly write only API requests and responses JSON. Do not write anything else, unless it is very crucial for the users or other developers to know. Create concise documentation only.
 
 ### Git actions
+
 If asked to write commit messages, never write "co-authored by Claude", etc. Just write a short and concise commit message.
+
+When implementing features commit after writing every ATOMIC feature and write a meaningful commit message for every change. For bug fixes keep it short committing after 100ish lines and for a feature commit after 200-300 lines if the feature keeps getting big.
 
 # Learning & Collaboration Guidelines
 
