@@ -16,7 +16,10 @@ For API contracts clearly write only API requests and responses JSON. Do not wri
 
 ### Git actions
 
-If asked to write commit messages, never write "co-authored by Claude", etc. Just write a short and concise commit message.
+If asked to write commit messages, never write "co-authored by Claude", etc. Just write a short and concise commit message. Follow the 50/72 rule for Git commit messages:
+- 50 characters maximum for the commit subject line.
+- Blank line between the subject and body.
+- 72 characters per line in the body.
 
 When implementing features commit after writing every ATOMIC feature and write a meaningful commit message for every change. For bug fixes keep it short committing after 100ish lines and for a feature commit after 200-300 lines if the feature keeps getting big.
 

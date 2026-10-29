@@ -39,7 +39,6 @@ ms-vscode.remote-explorer
 ms-vscode.remote-server
 ms-vsliveshare.vsliveshare
 rooveterinaryinc.roo-cline
-saoudrizwan.claude-dev
 shd101wyy.markdown-preview-enhanced
 singularityinc.claude-notifier
 zhang-renyang.vscode-react
