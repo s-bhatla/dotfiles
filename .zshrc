@@ -83,6 +83,7 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 # git add + commit + push
 alias gpush='f() { git add . && git commit -m "$1" && git push; }; f'
 alias c='clear'
+alias q='exit'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

@@ -38,6 +38,8 @@ ms-vscode.cpptools
 ms-vscode.remote-explorer
 ms-vscode.remote-server
 ms-vsliveshare.vsliveshare
+openai.chatgpt
+openai.codex-audio
 rooveterinaryinc.roo-cline
 shd101wyy.markdown-preview-enhanced
 singularityinc.claude-notifier

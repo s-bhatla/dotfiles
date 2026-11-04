@@ -42,5 +42,6 @@
     "workbench.editor.showTabs": "multiple",
     "workbench.editor.editorActionsLocation": "default",
     "breadcrumbs.enabled": true,
-    "zenMode.hideLineNumbers": false
+    "zenMode.hideLineNumbers": false,
+    "terminal.integrated.initialHint": false
 }
