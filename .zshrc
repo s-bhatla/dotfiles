@@ -68,6 +68,19 @@ bindkey -M vicmd '^R' fzf-history-widget 2>/dev/null
 
 ##### CUSTOM FUNCTIONS #####
 
+# open vscode folder project using fzf
+zproj() {
+  if (( $# == 0 )); then
+    echo "Usage: zproj <foldername>"
+    return 1
+  fi
+
+  local dir
+  dir=$(zoxide query -- "$@") || return 1
+
+  code --new-window "$dir"
+}
+
 # cd using fd + fzf
 cdf() {
   local dir

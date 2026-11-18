@@ -1,4 +1,5 @@
 # Skills installed with the skills CLI (npx skills add). Format: <source> <skill>...
+GoogleChrome/modern-web-guidance modern-web-guidance
 mattpocock/skills grill-me teach grill-with-docs codebase-design code-review
 vercel-labs/skills find-skills
 woosal1337/blog asd-ste100
