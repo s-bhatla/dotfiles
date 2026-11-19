@@ -128,6 +128,11 @@ The script moves a real file or folder that a link replaces to `~/.agents/backup
 To add a public skill, add its source and name to `llm/skills.txt`.
 `dotsync` copies `CLAUDE.md` changes and new `npx skills add` installs back into the repo.
 
+### agent-diff
+
+[agent-diff](https://github.com/s-bhatla/agent-diff) opens an inline VS Code diff after each Claude Code or omp run.
+`install.sh` clones it and runs its installer. That installer adds `~/.local/bin/agent-diff`, the VS Code extension, the omp extension and the Claude Code hooks. It skips each tool that it does not find. Install omp before you run `install.sh` if you want the omp extension.
+
 ## Repo structure
 
 ```

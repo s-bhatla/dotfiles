@@ -19,7 +19,8 @@ grab "$HOME/.zshrc"                 "$REPO/.zshrc"
 grab "$HOME/.claude/CLAUDE.md"      "$REPO/llm/CLAUDE.md"
 grab "$VSCODE_USER/settings.json"   "$REPO/vscode/settings.json"
 
-command -v code &>/dev/null && code --list-extensions > "$REPO/vscode/extensions.txt"
+# local.* extensions come from a .vsix (agent-diff), not the marketplace
+command -v code &>/dev/null && code --list-extensions | grep -v '^local\.' > "$REPO/vscode/extensions.txt"
 
 # Local skills: pull edits back from wherever the agent reads them
 for dir in "$REPO"/llm/skills/*/; do
