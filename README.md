@@ -30,6 +30,7 @@ Full developer machine bootstrap for macOS and Linux (Debian/Ubuntu). One script
 | [Go](https://go.dev/) | Go toolchain (latest stable) |
 | [Rust](https://www.rust-lang.org/) | Rust toolchain via rustup |
 | [gh](https://cli.github.com/) | GitHub CLI — PRs, issues, auth from the terminal |
+| [omp](https://github.com/can1357/oh-my-pi) | oh-my-pi coding agent (prebuilt binary, updates itself) |
 | [git-delta](https://github.com/dandavison/delta) | Syntax-highlighted git diffs (set as default pager) |
 | [direnv](https://direnv.net/) | Per-directory environment variables via `.envrc` |
 
@@ -131,7 +132,7 @@ To add a public skill, add its source and name to `llm/skills.txt`.
 ### agent-diff
 
 [agent-diff](https://github.com/s-bhatla/agent-diff) opens an inline VS Code diff after each Claude Code or omp run.
-`install.sh` clones it and runs its installer. That installer adds `~/.local/bin/agent-diff`, the VS Code extension, the omp extension and the Claude Code hooks. It skips each tool that it does not find. Install omp before you run `install.sh` if you want the omp extension.
+`install.sh` clones it and runs its installer. That installer adds `~/.local/bin/agent-diff`, the VS Code extension, the omp extension and the Claude Code hooks. It skips each tool that it does not find. `install.sh` installs omp first, so the omp extension always installs.
 
 ## Repo structure
 

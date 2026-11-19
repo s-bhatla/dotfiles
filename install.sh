@@ -311,6 +311,16 @@ if command -v code &>/dev/null; then
   done < "$SCRIPT_DIR/vscode/extensions.txt"
 fi
 
+# ── omp (oh-my-pi coding agent) ───────────────────────────────────────────────
+# Prebuilt binary to ~/.local/bin. It updates itself after that.
+
+if ! command -v omp &>/dev/null && [ ! -f "$HOME/.local/bin/omp" ]; then
+  log "Installing omp..."
+  curl -fsSL https://omp.sh/install | sh || warn "Failed to install omp"
+fi
+# omp makes ~/.omp/agent on its first run. Make it now, so agent-diff finds omp.
+[ -f "$HOME/.local/bin/omp" ] && mkdir -p "$HOME/.omp/agent"
+
 # ── agent-diff: VS Code review of each Claude Code / omp run ──────────────────
 # Its installer adds the script, the VS Code extension, the omp extension and
 # the Claude Code hooks. It skips each tool it does not find, so run it last.
