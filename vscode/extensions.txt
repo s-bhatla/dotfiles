@@ -40,7 +40,8 @@ ms-vscode.remote-server
 ms-vsliveshare.vsliveshare
 openai.chatgpt
 openai.codex-audio
-rooveterinaryinc.roo-cline
+pomdtr.excalidraw-editor
 shd101wyy.markdown-preview-enhanced
+shohihulmaksud.oh-my-pi-vscode
 singularityinc.claude-notifier
 zhang-renyang.vscode-react

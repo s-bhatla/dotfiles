@@ -14,6 +14,24 @@ If requirement is to generate a document larger than 6 pages or larger than 3000
 ## API Contract writing style
 For API contracts clearly write only API requests and responses JSON. Do not write anything else, unless it is very crucial for the users or other developers to know. Create concise documentation only.
 
+## Coding Guidelines
+
+### Change size
+- By default, split work larger than ~200 changed lines into subtasks.
+  List the subtasks with estimates before you write code.
+- Each subtask must leave the code in a state that builds and passes tests.
+  A clean boundary is more important than the line count.
+- Do not count tests, generated files, lockfiles or mechanical renames.
+- Never make code denser or drop tests or error handling to fit the limit.
+- After each subtask: commit, give a short summary, then wait for my review, then ask permission to do the next subtask.
+
+### Run on your own
+- Triggers: "just build", "quick", "write all at once". Subagents and
+  headless runs also use this mode.
+- In this mode, do not stop between subtasks. Do all subtasks in one run.
+- Still split the work, and still commit after each subtask.
+- At the end, give one summary that lists each subtask and its commit.
+
 ### Git actions
 
 If asked to write commit messages, never write "co-authored by Claude", etc. Just write a short and concise commit message. Follow the 50/72 rule for Git commit messages:
