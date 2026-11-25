@@ -132,7 +132,9 @@ To add a public skill, add its source and name to `llm/skills.txt`.
 ### agent-diff
 
 [agent-diff](https://github.com/s-bhatla/agent-diff) opens an inline VS Code diff after each Claude Code or omp run.
-`install.sh` clones it and runs its installer. That installer adds `~/.local/bin/agent-diff`, the VS Code extension, the omp extension and the Claude Code hooks. It skips each tool that it does not find. `install.sh` installs omp first, so the omp extension always installs.
+`install.sh` clones it and runs its installer. That installer adds `~/.local/bin/agent-diff`, the VS Code extension, the Neovim mappings for vscode-neovim, the omp extension and the Claude Code hooks. It skips each tool that it does not find. `install.sh` installs omp and the VS Code extensions first, so the omp extension and the Neovim mappings always install.
+
+During a review, the extension sets `diffEditor.renderSideBySide` to `false` in VS Code `settings.json`, which is a link to `vscode/settings.json` in this repo. After the review it puts the old value back. Do not run `dotsync` during a review, or the repo saves the temporary value.
 
 ## Repo structure
 

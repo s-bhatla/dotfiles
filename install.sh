@@ -322,8 +322,9 @@ fi
 [ -f "$HOME/.local/bin/omp" ] && mkdir -p "$HOME/.omp/agent"
 
 # ── agent-diff: VS Code review of each Claude Code / omp run ──────────────────
-# Its installer adds the script, the VS Code extension, the omp extension and
-# the Claude Code hooks. It skips each tool it does not find, so run it last.
+# Its installer adds the script, the VS Code extension, the Neovim mappings for
+# vscode-neovim, the omp extension and the Claude Code hooks. It skips each tool
+# it does not find, so run it last.
 
 log "Installing agent-diff..."
 AGENT_DIFF="$(mktemp -d)"
