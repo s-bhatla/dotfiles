@@ -11,6 +11,9 @@ I always prefer these rules for all prose:
 When generating documents, Always aim to generate documents with a word count of less than 3000 words, or less than 6 pages.
 If requirement is to generate a document larger than 6 pages or larger than 3000 words, always ask for permission with a size estimate.
 
+## Teaching document Guidelines
+When generating teaching documents or mds NEVER use a term that you have not defined before (unless it is obvious user knows those terms). Always use define terms properly, offering explanation if needed. 
+
 ## API Contract writing style
 For API contracts clearly write only API requests and responses JSON. Do not write anything else, unless it is very crucial for the users or other developers to know. Create concise documentation only.
 
