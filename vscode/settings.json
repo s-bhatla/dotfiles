@@ -43,5 +43,6 @@
     "workbench.editor.editorActionsLocation": "default",
     "breadcrumbs.enabled": true,
     "zenMode.hideLineNumbers": false,
-    "terminal.integrated.initialHint": false
+    "terminal.integrated.initialHint": false,
+    "diffEditor.renderSideBySide": false
 }
